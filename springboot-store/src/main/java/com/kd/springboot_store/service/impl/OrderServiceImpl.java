@@ -2,14 +2,15 @@ package com.kd.springboot_store.service.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.kd.springboot_store.dao.*;
-import com.kd.springboot_store.dto.BuyItem;
-import com.kd.springboot_store.dto.CreateOrderRequestDTO;
-import com.kd.springboot_store.dto.OrderItemResponseDTO;
-import com.kd.springboot_store.dto.OrderResponseDTO;
-import com.kd.springboot_store.model.Order;
-import com.kd.springboot_store.model.OrderItem;
-import com.kd.springboot_store.model.Product;
+import com.kd.springboot_store.dto.*;
+import com.kd.springboot_store.model.*;
 import com.kd.springboot_store.service.OrderService;
+import com.kd.springboot_store.util.BeanCopyUtils;
+import com.querydsl.core.types.ExpressionUtils;
+import com.querydsl.core.types.Predicate;
+import com.querydsl.jpa.impl.JPAQueryFactory;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,9 +31,67 @@ public class OrderServiceImpl implements OrderService
     @Autowired
     OrderItemRepository orderItemRepository;
 
+    @PersistenceContext
+    EntityManager entityManager;
+
     @Autowired
     OrderItemResponseDTODao orderItemResponseDTODao;
 
+    @Autowired
+    OrderQueryDSLRepository orderQueryDSLRepository;
+
+    @Override
+    public Integer countOrder(OrderQueryParamsDTO orderQueryParamsDTO)
+    {
+        JPAQueryFactory jpaQueryFactory=new JPAQueryFactory(entityManager);
+        QOrder qOrder=QOrder.order;
+
+        List<Order> orderList = (List<Order>) orderQueryDSLRepository.findAll
+                (
+                    qOrder.userId.eq(orderQueryParamsDTO.getUserId())
+        );
+        int totalCount = orderList.size();
+
+        return totalCount;
+    }
+
+    @Override
+    public List<OrderResponseDTO> getOrders(OrderQueryParamsDTO orderQueryParamsDTO)
+    {
+
+        JPAQueryFactory jpaQueryFactory=new JPAQueryFactory(entityManager);
+        QOrder qOrder=QOrder.order;
+
+        //初始化組裝條件(類似where 1=1)
+        Predicate predicate = qOrder.isNotNull().or(qOrder.isNull());
+        //執行動態條件件拼装
+        predicate = orderQueryParamsDTO.getUserId() == null ? predicate : ExpressionUtils.and(predicate,
+                qOrder.userId.eq(orderQueryParamsDTO.getUserId()));
+        //執行拚装好的條件並根據userId排序，根據uIndex分組
+        List<Order> orderList = jpaQueryFactory.selectFrom(qOrder)
+                .where(predicate)
+                .offset(orderQueryParamsDTO.getOffset())
+                .limit(orderQueryParamsDTO.getLimit())
+                .orderBy(qOrder.createdDate.desc())
+                .fetch();
+
+        List<OrderResponseDTO> orderResponseDTOS=BeanCopyUtils.copyListProperties(orderList
+                , OrderResponseDTO::new);
+
+        for (OrderResponseDTO orderResponseDTO: orderResponseDTOS)
+        {
+            List<Map<String,String>> rawOrderItemList =
+                    orderItemRepository.getOrderItemByOrderId(orderResponseDTO.getUserId());
+            List<OrderItemResponseDTO> orderItemList = JSON.parseArray(JSON.toJSONString(rawOrderItemList), OrderItemResponseDTO.class);
+            orderResponseDTO.setOrderItemList(orderItemList);
+
+        }
+
+
+        return orderResponseDTOS;
+
+
+    }
 
     @Transactional
     @Override
