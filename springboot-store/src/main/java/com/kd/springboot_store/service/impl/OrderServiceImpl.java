@@ -40,6 +40,7 @@ public class OrderServiceImpl implements OrderService
     @Autowired
     OrderQueryDSLRepository orderQueryDSLRepository;
 
+    @Transactional
     @Override
     public Integer countOrder(OrderQueryParamsDTO orderQueryParamsDTO)
     {
@@ -55,6 +56,7 @@ public class OrderServiceImpl implements OrderService
         return totalCount;
     }
 
+    @Transactional
     @Override
     public List<OrderResponseDTO> getOrders(OrderQueryParamsDTO orderQueryParamsDTO)
     {
@@ -80,9 +82,11 @@ public class OrderServiceImpl implements OrderService
 
         for (OrderResponseDTO orderResponseDTO: orderResponseDTOS)
         {
-            List<Map<String,String>> rawOrderItemList =
-                    orderItemRepository.getOrderItemByOrderId(orderResponseDTO.getUserId());
-            List<OrderItemResponseDTO> orderItemList = JSON.parseArray(JSON.toJSONString(rawOrderItemList), OrderItemResponseDTO.class);
+            List<Map<String,String>> rawOrderItemList=null;
+            List<OrderItemResponseDTO> orderItemList=null;
+            rawOrderItemList =
+                    orderItemRepository.getOrderItemByOrderId(orderResponseDTO.getOrderId());
+            orderItemList = JSON.parseArray(JSON.toJSONString(rawOrderItemList), OrderItemResponseDTO.class);
             orderResponseDTO.setOrderItemList(orderItemList);
 
         }

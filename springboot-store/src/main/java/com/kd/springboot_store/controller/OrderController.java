@@ -6,6 +6,8 @@ import com.kd.springboot_store.dto.OrderResponseDTO;
 import com.kd.springboot_store.model.Order;
 import com.kd.springboot_store.service.OrderService;
 import com.kd.springboot_store.util.Page;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
@@ -16,13 +18,15 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Tag(name="訂單", description = "訂單API")
 @RestController
 public class OrderController
 {
     @Autowired
     private OrderService orderService;
 
-    @GetMapping("/users/{userId}/orders")
+    @Operation(summary = "取得用戶所有訂單")
+    @GetMapping("/api/users/{userId}/orders")
     public ResponseEntity<Page<OrderResponseDTO>> getOrders(
             @PathVariable Integer userId,
             // 分頁 Pagination
@@ -50,11 +54,8 @@ public class OrderController
     }
 
 
-
-
-
-
-    @PostMapping("/users/{userId}/orders")
+    @Operation(summary = "創建訂單")
+    @PostMapping("/api/users/{userId}/orders")
     public ResponseEntity<?> createOrder(@PathVariable Integer userId,
                                          @RequestBody @Valid CreateOrderRequestDTO createOrderRequestDTO)
     {
@@ -64,10 +65,6 @@ public class OrderController
 
         return ResponseEntity.status(HttpStatus.CREATED).body(orderResponseDTO);
     }
-
-
-
-
 
 
 

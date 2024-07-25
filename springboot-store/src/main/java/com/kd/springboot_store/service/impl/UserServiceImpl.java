@@ -73,7 +73,7 @@ public class UserServiceImpl implements UserService
                 DigestUtils.md5DigestAsHex(userLoginRequestDTO.getPassword().getBytes());
 
         // 比較密碼
-        if(user.getPassword().equals(hashedPassword))
+        if(user.getPassword().equals(userLoginRequestDTO.getPassword()))
         {
             BeanUtils.copyProperties(user, userResponseDTO);
             return userResponseDTO;
@@ -84,6 +84,26 @@ public class UserServiceImpl implements UserService
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
 
         }
+
+
+
+//        if(user.getPassword().equals(hashedPassword))
+//        {
+//            BeanUtils.copyProperties(user, userResponseDTO);
+//            return userResponseDTO;
+//        }
+//        else
+//        {
+//            log.warn("該 email {} 的密碼不正確", userLoginRequestDTO.getEmail());
+//            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+//
+//        }
+
+
+
+
+
+
     }
 
 

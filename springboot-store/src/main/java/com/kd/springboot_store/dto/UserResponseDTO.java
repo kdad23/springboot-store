@@ -1,6 +1,7 @@
 package com.kd.springboot_store.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.Date;
 
@@ -20,6 +21,12 @@ public class UserResponseDTO
 
 
     private Date lastModifiedDate;
+
+
+    private String roles;
+
+    private String accessToken;
+
 
     public Integer getUserId() {
         return userId;
@@ -59,5 +66,21 @@ public class UserResponseDTO
 
     public void setLastModifiedDate(Date lastModifiedDate) {
         this.lastModifiedDate = lastModifiedDate;
+    }
+
+    public String getRoles() {
+        return roles;
+    }
+
+    public void setRoles(String roles) {
+        this.roles = roles;
+    }
+
+    public String getAccessToken() {
+        return accessToken;
+    }
+
+    public void setAccessToken(String accessToken) {
+        this.accessToken = accessToken;
     }
 }

@@ -16,25 +16,37 @@ public class ApiUiConfig
     {
         return GroupedOpenApi.builder()
                 .group("用戶管理")
-                .pathsToMatch("/angular/users/**")
+                .pathsToMatch("/api/users/register")
+                .pathsToMatch("/api/users/login")
                 .build();
     }
     @Bean
-    public GroupedOpenApi toDoApi()
+    public GroupedOpenApi productApi()
     {
         return GroupedOpenApi.builder()
-                .group("待辦事項管理")
-                .pathsToMatch("/angular/note/**")
-                .pathsToMatch("/angular/notes/**")
+                .group("產品管理")
+                .pathsToMatch("/api/products/**")
+                .pathsToMatch("/api/**")
                 .build();
     }
+
+
+    @Bean
+    public GroupedOpenApi orderApi()
+    {
+        return GroupedOpenApi.builder()
+                .group("訂單管理")
+                .pathsToMatch("/api/users/**")
+                .build();
+    }
+
 
     @Bean
     public OpenAPI docsOpenApi()
     {
         return new OpenAPI()
-                .info(new Info().title("待辦事項 API")
-                        .description("待辦事項應用")
+                .info(new Info().title("電商API")
+                        .description("電商應用")
                         .version("v0.0.1")
         .license(new License().name("Apache").url("http://springdoc.org")))
                 .externalDocs(new ExternalDocumentation().description("參考文件")

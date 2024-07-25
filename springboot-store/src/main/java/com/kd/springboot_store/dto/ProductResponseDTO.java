@@ -10,12 +10,13 @@ public class ProductResponseDTO
     private Integer productId;
     private String productName;
     private ProductCategory category;
-    private String imageUrl;
+    private String imag;
     private Integer price;
     private Integer stock;
     private String description;
     private Date createdDate;
     private Date lastModifiedDate;
+
 
     public Integer getProductId() {
         return productId;
@@ -41,12 +42,12 @@ public class ProductResponseDTO
         this.category = category;
     }
 
-    public String getImageUrl() {
-        return imageUrl;
+    public String getImag() {
+        return imag;
     }
 
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
+    public void setImag(String imag) {
+        this.imag = imag;
     }
 
     public Integer getPrice() {
