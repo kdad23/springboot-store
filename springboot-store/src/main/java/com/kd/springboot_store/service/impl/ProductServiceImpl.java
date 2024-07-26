@@ -26,6 +26,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -116,6 +117,7 @@ public class ProductServiceImpl implements ProductService
 
 
 
+    @Transactional
     @Override
     public List<ProductResponseDTO> getProducts(ProductQueryParams productQueryParams)
     {
@@ -157,6 +159,7 @@ public class ProductServiceImpl implements ProductService
 
 
 
+    @Transactional
     @Override
     public ProductResponseDTO getProductById(Integer productId) {
 
@@ -176,6 +179,7 @@ public class ProductServiceImpl implements ProductService
     }
 
 
+    @Transactional
     @Override
     public Integer createProduct(ProductRequestDTO productRequestDTO)
     {
@@ -188,6 +192,7 @@ public class ProductServiceImpl implements ProductService
         return productId;
     }
 
+    @Transactional
     @Override
     public void updateProduct(Integer productId, ProductRequestDTO productRequestDTO)
     {
@@ -208,6 +213,7 @@ public class ProductServiceImpl implements ProductService
 
     }
 
+    @Transactional
     @Override
     public void deleteProductById(Integer productId) {
         productRepository.deleteById(productId);

@@ -1,8 +1,6 @@
 package com.kd.springboot_store.controller;
 
-import com.kd.springboot_store.dto.UserLoginRequestDTO;
-import com.kd.springboot_store.dto.UserRegisterRequestDTO;
-import com.kd.springboot_store.dto.UserResponseDTO;
+import com.kd.springboot_store.dto.*;
 import com.kd.springboot_store.service.UserService;
 import com.kd.springboot_store.util.JwtUtils;
 import io.swagger.v3.oas.annotations.Operation;
@@ -15,11 +13,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Slf4j
@@ -106,6 +103,60 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).body(userResponseDTO);
 
     }
+
+
+
+
+    @Operation(summary = "取得所有用戶")
+    @GetMapping("/api/users/getalluser")
+    public ResponseEntity<List<UserResponseDTO>> getAllUser()
+    {
+        List<UserResponseDTO> userResponseDTOList = userService.getAllUser();
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(userResponseDTOList);
+    }
+
+
+    @Operation(summary = "取得用戶")
+    @GetMapping("/api/users/getUser/{userId}")
+    public ResponseEntity<UserResponseDTO> getUser(@PathVariable Integer userId)
+    {
+        //檢查user是否存在
+        UserResponseDTO userResponseDTO=userService.getUserById(userId);
+        if(userResponseDTO ==null)
+        {
+            return  ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(userResponseDTO);
+    }
+
+
+    @Operation(summary = "更新用戶角色")
+    @PutMapping("/api/users/update/{userId}")
+    public ResponseEntity<UserResponseDTO> updateUser(@RequestBody @Valid UserRequestDTO userRequestDTO,
+                                                      HttpServletRequest request,
+                                                      HttpServletResponse response, @PathVariable Integer userId)
+    {
+
+        //檢查user是否存在
+        UserResponseDTO userResponseDTO=userService.getUserById(userId);
+        if(userResponseDTO ==null)
+        {
+            return  ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+        // 修改使用角色權限
+        userService.updateUser(userId, userRequestDTO);
+        // 返回新增的資料物件
+        UserResponseDTO userResponseDTO2=userService.getUserById(userId);
+
+        return ResponseEntity.status(HttpStatus.OK).body(userResponseDTO2);
+
+    }
+
+
+
+
 
 
 }

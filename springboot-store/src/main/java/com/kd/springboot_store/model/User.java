@@ -46,6 +46,15 @@ public class User
     private Date lastModifiedDate=new Date();
 
 
+    @Schema(title = "用戶權限角色roles")
+    @Column(name = "roles")
+    private String roles;
+
+    @Schema(title = "accessToken")
+    @Column(name = "accesstoken")
+    private String accessToken;
+
+
     public Integer getUserId() {
         return userId;
     }
@@ -86,28 +95,19 @@ public class User
         this.lastModifiedDate = lastModifiedDate;
     }
 
-    @Override
-    public int hashCode() {
-        return super.hashCode();
+    public String getRoles() {
+        return roles;
     }
 
-    @Override
-    public boolean equals(Object obj) {
-        return super.equals(obj);
+    public void setRoles(String roles) {
+        this.roles = roles;
     }
 
-    @Override
-    protected Object clone() throws CloneNotSupportedException {
-        return super.clone();
+    public String getAccessToken() {
+        return accessToken;
     }
 
-    @Override
-    public String toString() {
-        return super.toString();
-    }
-
-    @Override
-    protected void finalize() throws Throwable {
-        super.finalize();
+    public void setAccessToken(String accessToken) {
+        this.accessToken = accessToken;
     }
 }

@@ -1,11 +1,11 @@
 package com.kd.springboot_store.service.impl;
 
 import com.kd.springboot_store.dao.UserRepository;
-import com.kd.springboot_store.dto.UserLoginRequestDTO;
-import com.kd.springboot_store.dto.UserRegisterRequestDTO;
-import com.kd.springboot_store.dto.UserResponseDTO;
+import com.kd.springboot_store.dto.*;
+import com.kd.springboot_store.model.Product;
 import com.kd.springboot_store.model.User;
 import com.kd.springboot_store.service.UserService;
+import com.kd.springboot_store.util.BeanCopyUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +13,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 import org.springframework.web.server.ResponseStatusException;
+
+import java.util.Date;
+import java.util.List;
 
 @Slf4j
 @Service
@@ -105,6 +108,52 @@ public class UserServiceImpl implements UserService
 
 
     }
+
+
+    @Override
+    public List<UserResponseDTO> getAllUser()
+    {
+
+        List<User> userList=userRepository.findAll();
+        List<UserResponseDTO> userResponseDTOList= BeanCopyUtils.copyListProperties(userList
+                , UserResponseDTO::new);
+        if (userResponseDTOList.size() > 0)
+        {
+
+            return userResponseDTOList;
+        }
+        else
+        {
+            return null;
+        }
+
+    }
+
+
+    @Override
+    public void updateUser(Integer userId, UserRequestDTO userRequestDTO)
+    {
+
+        User user=new User();
+        BeanUtils.copyProperties(userRequestDTO, user);
+
+        // 從資料庫裡取出的資料
+        User user2=
+                userRepository.findById(userId).orElse(null);
+
+        if (user2 != null)
+        {
+            // 更新商品的更新時間
+            user2.setLastModifiedDate(new Date());
+            user2.setRoles(userRequestDTO.getRoles());
+//            BeanUtils.copyProperties(user2, user2);
+            userRepository.save(user2);
+        }
+    }
+
+
+
+
 
 
 
