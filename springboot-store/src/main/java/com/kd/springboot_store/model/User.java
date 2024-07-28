@@ -30,7 +30,7 @@ public class User
     @Column(name = "email")
     private String email;
 
-    @JsonIgnore
+
     @Schema(title = "密碼")
     @Column(name = "password")
     private String password;

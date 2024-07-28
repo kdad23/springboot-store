@@ -1,6 +1,8 @@
 package com.kd.springboot_store.controller;
 
 import com.kd.springboot_store.dto.*;
+import com.kd.springboot_store.model.User;
+import com.kd.springboot_store.service.LoginService;
 import com.kd.springboot_store.service.UserService;
 import com.kd.springboot_store.util.JwtUtils;
 import io.swagger.v3.oas.annotations.Operation;
@@ -13,6 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -26,6 +29,9 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private LoginService loginServcie;
 
     @Operation(summary = "註冊")
     @PostMapping("/api/users/register")
@@ -153,6 +159,44 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).body(userResponseDTO2);
 
     }
+
+
+
+/////////////////////////////////////////////////
+
+    @Operation(summary = "登入")
+    @PostMapping("/api/login")
+    public ResponseResult  loginForSpringSecurity(@RequestBody User user)
+    {
+
+        System.out.println("user.getEmail()---" + user.getEmail());
+        System.out.println("user.getPassword()---" + user.getPassword());
+        return loginServcie.login(user);
+
+    }
+
+    @PostMapping("/logout")
+    public ResponseResult logout(){
+        System.out.println("开始登出");
+        return loginServcie.logout();
+    }
+
+
+    @PreAuthorize("hasAuthority('USER')")
+    @GetMapping("/hello")
+    public String  hello()
+    {
+
+        return "Hello---------------";
+
+    }
+
+
+
+
+
+
+
 
 
 

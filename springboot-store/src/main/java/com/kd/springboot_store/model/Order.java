@@ -30,8 +30,14 @@ public class Order
     @Column(name = "last_modified_date")
     private Date lastModifiedDate=new Date();
 
-//    @OneToMany(cascade = CascadeType.PERSIST , mappedBy = "order")
-//    private List<OrderItem> orderItemList;
+
+
+    @Schema(title = "刪除標誌")
+    @Column(name = "delFlag")
+    private String delFlag;
+    @Schema(title = "備註")
+    @Column(name = "remark")
+    private String remark;
 
 
     public Integer getOrderId() {
@@ -74,7 +80,19 @@ public class Order
         this.lastModifiedDate = lastModifiedDate;
     }
 
+    public String getDelFlag() {
+        return delFlag;
+    }
 
+    public void setDelFlag(String delFlag) {
+        this.delFlag = delFlag;
+    }
 
+    public String getRemark() {
+        return remark;
+    }
 
+    public void setRemark(String remark) {
+        this.remark = remark;
+    }
 }

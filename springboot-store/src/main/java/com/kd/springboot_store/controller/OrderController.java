@@ -16,6 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -32,6 +33,7 @@ public class OrderController
     @Autowired
     private ProductService productService;
 
+//    @PreAuthorize("hasAuthority('')")
     @Operation(summary = "取得用戶所有訂單")
     @GetMapping("/api/users/{userId}/orders")
     public ResponseEntity<Page<OrderResponseDTO>> getOrders(

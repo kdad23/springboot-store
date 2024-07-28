@@ -9,7 +9,10 @@ import com.kd.springboot_store.util.BeanCopyUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 import org.springframework.web.server.ResponseStatusException;
@@ -23,6 +26,11 @@ public class UserServiceImpl implements UserService
 {
     @Autowired
     UserRepository userRepository;
+
+
+
+    @Autowired
+    PasswordEncoder passwordEncoder;
 
     @Override
     public UserResponseDTO getUserById(Integer userId)
@@ -46,9 +54,11 @@ public class UserServiceImpl implements UserService
     @Override
     public Integer register(UserRegisterRequestDTO userRegisterRequestDTO)
     {
-
+        // 密碼用BCrypt加密
+        userRegisterRequestDTO.setPassword(passwordEncoder.encode(userRegisterRequestDTO.getPassword()));
         User user=new User();
         BeanUtils.copyProperties(userRegisterRequestDTO, user);
+        user.setRoles("USER");
         userRepository.save(user);
         Integer userId=
                 userRepository.findById(user.getUserId()).orElse(null).getUserId();
@@ -143,7 +153,7 @@ public class UserServiceImpl implements UserService
 
         if (user2 != null)
         {
-            // 更新商品的更新時間
+            // 更新用戶的更新時間
             user2.setLastModifiedDate(new Date());
             user2.setRoles(userRequestDTO.getRoles());
 //            BeanUtils.copyProperties(user2, user2);

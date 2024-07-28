@@ -30,6 +30,11 @@ public class OrderItemDTO
 
     private String imag;
 
+
+    private String delFlag;
+
+    private String remark;
+
     public Integer getOrderItemId() {
         return orderItemId;
     }
@@ -76,5 +81,21 @@ public class OrderItemDTO
 
     public void setImag(String imag) {
         this.imag = imag;
+    }
+
+    public String getDelFlag() {
+        return delFlag;
+    }
+
+    public void setDelFlag(String delFlag) {
+        this.delFlag = delFlag;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
     }
 }

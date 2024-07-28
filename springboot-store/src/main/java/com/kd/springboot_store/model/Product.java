@@ -48,24 +48,13 @@ public class Product implements Serializable
     @Column(name = "last_modified_date")
     private Date lastModifiedDate=new Date();
 
-    public Date getCreatedDate() {
-        return createdDate;
-    }
 
-    public void setCreatedDate(Date createdDate) {
-        this.createdDate = createdDate;
-    }
-
-
-
-    public ProductCategory getCategory() {
-        return category;
-    }
-
-    public void setCategory(ProductCategory category) {
-        this.category = category;
-    }
-
+    @Schema(title = "刪除標誌")
+    @Column(name = "delFlag")
+    private String delFlag;
+    @Schema(title = "備註")
+    @Column(name = "remark")
+    private String remark;
 
 
     public Integer getProductId() {
@@ -82,6 +71,14 @@ public class Product implements Serializable
 
     public void setProductName(String productName) {
         this.productName = productName;
+    }
+
+    public ProductCategory getCategory() {
+        return category;
+    }
+
+    public void setCategory(ProductCategory category) {
+        this.category = category;
     }
 
     public String getImag() {
@@ -116,11 +113,35 @@ public class Product implements Serializable
         this.description = description;
     }
 
+    public Date getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(Date createdDate) {
+        this.createdDate = createdDate;
+    }
+
     public Date getLastModifiedDate() {
         return lastModifiedDate;
     }
 
     public void setLastModifiedDate(Date lastModifiedDate) {
         this.lastModifiedDate = lastModifiedDate;
+    }
+
+    public String getDelFlag() {
+        return delFlag;
+    }
+
+    public void setDelFlag(String delFlag) {
+        this.delFlag = delFlag;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
     }
 }

@@ -33,28 +33,12 @@ public class OrderItem
     @Column(name = "amount")
     private Integer amount;
 
-//    @Schema(title = "產品product")
-//    @ManyToOne(cascade = CascadeType.ALL)
-//    @JoinColumn(name = "order_id")
-//    private Order order;
-
-
-
-
-
-    // orphanRemoval為true:關聯的資料為null，對應的關聯表中的資料一併刪除
-//    @Schema(title = "產品product")
-//    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
-//    @JoinColumn(name = "product_id")
-//    private Product product;
-
-
-//    @Column(name = "product_name")
-//    private String productName;
-//    @Column(name = "imag")
-//    private String imag;
-
-
+    @Schema(title = "刪除標誌")
+    @Column(name = "delFlag")
+    private String delFlag;
+    @Schema(title = "備註")
+    @Column(name = "remark")
+    private String remark;
 
 
     public Integer getOrderItemId() {
@@ -95,5 +79,21 @@ public class OrderItem
 
     public void setAmount(Integer amount) {
         this.amount = amount;
+    }
+
+    public String getDelFlag() {
+        return delFlag;
+    }
+
+    public void setDelFlag(String delFlag) {
+        this.delFlag = delFlag;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
     }
 }

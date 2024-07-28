@@ -31,6 +31,13 @@ public class OrderItemResponseDTO
     @Schema(title = "產品圖片")
     private String imag;
 
+
+    @Schema(title = "刪除標誌")
+    private String delFlag;
+    @Schema(title = "備註")
+    private String remark;
+
+
     public Integer getOrderItemId() {
         return orderItemId;
     }
@@ -85,5 +92,21 @@ public class OrderItemResponseDTO
 
     public void setImag(String imag) {
         this.imag = imag;
+    }
+
+    public String getDelFlag() {
+        return delFlag;
+    }
+
+    public void setDelFlag(String delFlag) {
+        this.delFlag = delFlag;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
     }
 }

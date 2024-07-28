@@ -1,6 +1,8 @@
 package com.kd.springboot_store.dto;
 
 import com.kd.springboot_store.constant.ProductCategory;
+import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.persistence.Column;
 
 import java.util.Date;
 
@@ -16,6 +18,11 @@ public class ProductResponseDTO
     private String description;
     private Date createdDate;
     private Date lastModifiedDate;
+
+
+    private String delFlag;
+
+    private String remark;
 
 
     public Integer getProductId() {
@@ -88,5 +95,21 @@ public class ProductResponseDTO
 
     public void setLastModifiedDate(Date lastModifiedDate) {
         this.lastModifiedDate = lastModifiedDate;
+    }
+
+    public String getDelFlag() {
+        return delFlag;
+    }
+
+    public void setDelFlag(String delFlag) {
+        this.delFlag = delFlag;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
     }
 }

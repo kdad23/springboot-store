@@ -28,6 +28,11 @@ public class OrderResponseDTO
     @Schema(title = "訂單產品細項")
     private List<OrderItemResponseDTO> orderItemList;
 
+    @Schema(title = "刪除標誌")
+    private String delFlag;
+    @Schema(title = "備註")
+    private String remark;
+
 
     public Integer getOrderId() {
         return orderId;
@@ -75,5 +80,21 @@ public class OrderResponseDTO
 
     public void setOrderItemList(List<OrderItemResponseDTO> orderItemList) {
         this.orderItemList = orderItemList;
+    }
+
+    public String getDelFlag() {
+        return delFlag;
+    }
+
+    public void setDelFlag(String delFlag) {
+        this.delFlag = delFlag;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
     }
 }
