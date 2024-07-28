@@ -101,18 +101,19 @@ public class SecurityConfig {
                 // 设置会话创建策略为无状态
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 // 配置授权规则             指定user/login路径.允许匿名访问(未登录可访问已登陆不能访问). 其他路径需要身份认证
-                .authorizeHttpRequests(auth -> auth.requestMatchers("/api/login").anonymous()
-                        .requestMatchers("/api/users/register").anonymous()
-                        .requestMatchers("/api/users/login").anonymous()
+                .authorizeHttpRequests(auth -> auth.requestMatchers("/api/login").permitAll()
+                        .requestMatchers("/api/users/register").permitAll()
+                        .requestMatchers("/api/users/login").permitAll()
                         .requestMatchers("/swagger-ui/**").permitAll()
                         .requestMatchers("/v3/**").permitAll()
                         .anyRequest().authenticated())
                 //开启跨域访问
                 .cors(AbstractHttpConfigurer::disable)
                 // 添加JWT认证过滤器
-                .addFilterBefore(jwtAuthenticationTokenFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(jwtAuthenticationTokenFilter,
+                        UsernamePasswordAuthenticationFilter.class);
                 // 配置异常处理
-                .exceptionHandling(exception -> exception.accessDeniedHandler(accessDeniedHandler).authenticationEntryPoint(authenticationEntryPoint));
+//                .exceptionHandling(exception -> exception.accessDeniedHandler(accessDeniedHandler).authenticationEntryPoint(authenticationEntryPoint));
 
 
         // 构建并返回安全过滤链

@@ -16,4 +16,8 @@ public interface UserService
     void updateUser(Integer userId, UserRequestDTO userRequestDTO);
 
 
+    Integer registerForSpringSecurity(UserRegisterRequestDTO userRegisterRequestDTO);
+
+
+
 }

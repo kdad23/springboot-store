@@ -33,82 +33,84 @@ public class UserController {
     @Autowired
     private LoginService loginServcie;
 
-    @Operation(summary = "註冊")
-    @PostMapping("/api/users/register")
-    public ResponseEntity<UserResponseDTO> register(@RequestBody @Valid UserRegisterRequestDTO userRegisterRequestDTO, HttpServletResponse response)
-    {
-        // create 要返回Integer
-        Integer userId=userService.register(userRegisterRequestDTO);
-        UserResponseDTO userResponseDTO=userService.getUserById(userId);
+    // 還沒有SpringSecurity做的註冊
+//    @Operation(summary = "註冊")
+//    @PostMapping("/api/users/register")
+//    public ResponseEntity<UserResponseDTO> register(@RequestBody @Valid UserRegisterRequestDTO userRegisterRequestDTO, HttpServletResponse response)
+//    {
+//        // create 要返回Integer
+//        Integer userId=userService.register(userRegisterRequestDTO);
+//        UserResponseDTO userResponseDTO=userService.getUserById(userId);
+//
+//
+//
+//        Map<String , Object> claims = new HashMap<>();
+//        claims.put("userId",userResponseDTO.getUserId());
+//        claims.put("email", userResponseDTO.getEmail());
+//        claims.put("password",userResponseDTO.getPassword());
+//        claims.put("createdDate",userResponseDTO.getCreatedDate());
+//        claims.put("lastModifiedDate",userResponseDTO.getLastModifiedDate());
+//        claims.put("accessToken",userResponseDTO.getAccessToken());
+//        claims.put("roles",userResponseDTO.getRoles());
+//
+//        //使用JWT，生成令牌
+//        // generateJwt() 參數要放入自訂義的訊息
+//        String jwt = JwtUtils.generateJwt(claims);
+//        userResponseDTO.setAccessToken(jwt);
+//
+//
+//        // 為Cookie 設置 HttpOnly
+//        Cookie myCookie = new Cookie("tokenFromJava", jwt);
+////        myCookie.setPath(request.getContextPath());
+//        myCookie.setPath("/");
+//        myCookie.setHttpOnly(true);
+//        myCookie.setMaxAge(1000);
+//        response.addCookie(myCookie);
+//        log.warn("-----註冊成功------");
+//
+//
+//
+//
+//        return ResponseEntity.status(HttpStatus.CREATED).body(userResponseDTO);
+//    }
 
 
-
-        Map<String , Object> claims = new HashMap<>();
-        claims.put("userId",userResponseDTO.getUserId());
-        claims.put("email", userResponseDTO.getEmail());
-        claims.put("password",userResponseDTO.getPassword());
-        claims.put("createdDate",userResponseDTO.getCreatedDate());
-        claims.put("lastModifiedDate",userResponseDTO.getLastModifiedDate());
-        claims.put("accessToken",userResponseDTO.getAccessToken());
-        claims.put("roles",userResponseDTO.getRoles());
-
-        //使用JWT，生成令牌
-        // generateJwt() 參數要放入自訂義的訊息
-        String jwt = JwtUtils.generateJwt(claims);
-        userResponseDTO.setAccessToken(jwt);
-
-
-        // 為Cookie 設置 HttpOnly
-        Cookie myCookie = new Cookie("tokenFromJava", jwt);
-//        myCookie.setPath(request.getContextPath());
-        myCookie.setPath("/");
-        myCookie.setHttpOnly(true);
-        myCookie.setMaxAge(1000);
-        response.addCookie(myCookie);
-        log.warn("-----註冊成功------");
-
-
-
-
-        return ResponseEntity.status(HttpStatus.CREATED).body(userResponseDTO);
-    }
-
-
-    @Operation(summary = "登入")
-    @PostMapping("/api/users/login")
-    public ResponseEntity<UserResponseDTO> login(@RequestBody @Valid UserLoginRequestDTO userLoginRequestDTO, HttpServletRequest request,
-                                                 HttpServletResponse response)
-    {
-        //
-        UserResponseDTO userResponseDTO=userService.login(userLoginRequestDTO);
-
-
-        Map<String , Object> claims = new HashMap<>();
-        claims.put("userId",userResponseDTO
-                .getUserId());
-        claims.put("email", userResponseDTO.getEmail());
-        claims.put("password",userResponseDTO.getPassword());
-        claims.put("createdDate",userResponseDTO.getCreatedDate());
-        claims.put("lastModifiedDate",userResponseDTO.getLastModifiedDate());
-        claims.put("accessToken",userResponseDTO.getAccessToken());
-        claims.put("roles",userResponseDTO.getRoles());
-        //使用JWT，生成令牌
-        // generateJwt() 參數要放入自訂義的訊息
-        String jwt = JwtUtils.generateJwt(claims);
-        userResponseDTO.setAccessToken(jwt);
-
-
-        // 為Cookie 設置 HttpOnly
-        Cookie myCookie = new Cookie("tokenFromJava", jwt);
-//        myCookie.setPath(request.getContextPath());
-        myCookie.setPath("/");
-        myCookie.setHttpOnly(true);
-        myCookie.setMaxAge(1000);
-        response.addCookie(myCookie);
-
-        return ResponseEntity.status(HttpStatus.OK).body(userResponseDTO);
-
-    }
+    // 還沒有SpringSecurity做的登入
+//    @Operation(summary = "登入")
+//    @PostMapping("/api/users/login")
+//    public ResponseEntity<UserResponseDTO> login(@RequestBody @Valid UserLoginRequestDTO userLoginRequestDTO, HttpServletRequest request,
+//                                                 HttpServletResponse response)
+//    {
+//        //
+//        UserResponseDTO userResponseDTO=userService.login(userLoginRequestDTO);
+//
+//
+//        Map<String , Object> claims = new HashMap<>();
+//        claims.put("userId",userResponseDTO
+//                .getUserId());
+//        claims.put("email", userResponseDTO.getEmail());
+//        claims.put("password",userResponseDTO.getPassword());
+//        claims.put("createdDate",userResponseDTO.getCreatedDate());
+//        claims.put("lastModifiedDate",userResponseDTO.getLastModifiedDate());
+//        claims.put("accessToken",userResponseDTO.getAccessToken());
+//        claims.put("roles",userResponseDTO.getRoles());
+//        //使用JWT，生成令牌
+//        // generateJwt() 參數要放入自訂義的訊息
+//        String jwt = JwtUtils.generateJwt(claims);
+//        userResponseDTO.setAccessToken(jwt);
+//
+//
+//        // 為Cookie 設置 HttpOnly
+//        Cookie myCookie = new Cookie("tokenFromJava", jwt);
+////        myCookie.setPath(request.getContextPath());
+//        myCookie.setPath("/");
+//        myCookie.setHttpOnly(true);
+//        myCookie.setMaxAge(1000);
+//        response.addCookie(myCookie);
+//
+//        return ResponseEntity.status(HttpStatus.OK).body(userResponseDTO);
+//
+//    }
 
 
 
@@ -164,16 +166,18 @@ public class UserController {
 
 /////////////////////////////////////////////////
 
-    @Operation(summary = "登入")
-    @PostMapping("/api/login")
-    public ResponseResult  loginForSpringSecurity(@RequestBody User user)
-    {
+//    @Operation(summary = "登入")
+//    @PostMapping("/api/login")
+//    public ResponseResult  loginForSpringSecurity(@RequestBody User user)
+//    {
+//
+//        System.out.println("user.getEmail()---" + user.getEmail());
+//        System.out.println("user.getPassword()---" + user.getPassword());
+//        return loginServcie.login(user);
+//
+//
+//    }
 
-        System.out.println("user.getEmail()---" + user.getEmail());
-        System.out.println("user.getPassword()---" + user.getPassword());
-        return loginServcie.login(user);
-
-    }
 
     @PostMapping("/logout")
     public ResponseResult logout(){
@@ -189,6 +193,36 @@ public class UserController {
 
         return "Hello---------------";
 
+    }
+
+
+
+
+
+    @Operation(summary = "登入")
+    @PostMapping("/api/users/login")
+    public ResponseResult  loginForSpringSecurity(@RequestBody User user)
+    {
+
+        System.out.println("user.getEmail()---" + user.getEmail());
+        System.out.println("user.getPassword()---" + user.getPassword());
+        return loginServcie.login(user);
+
+    }
+
+
+
+    @Operation(summary = "註冊")
+    @PostMapping("/api/users/register")
+    public ResponseEntity<UserResponseDTO> register(@RequestBody @Valid UserRegisterRequestDTO userRegisterRequestDTO, HttpServletResponse response)
+    {
+        // create 要返回Integer
+        Integer userId=userService.registerForSpringSecurity(userRegisterRequestDTO);
+
+        UserResponseDTO userResponseDTO=userService.getUserById(userId);
+        log.warn("-----註冊成功------");
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(userResponseDTO);
     }
 
 

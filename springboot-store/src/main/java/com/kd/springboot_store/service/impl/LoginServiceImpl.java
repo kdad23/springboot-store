@@ -1,5 +1,6 @@
 package com.kd.springboot_store.service.impl;
 
+import com.kd.springboot_store.dto.UserResponseDTO;
 import com.kd.springboot_store.model.LoginUser;
 import com.kd.springboot_store.model.User;
 import com.kd.springboot_store.dto.ResponseResult;
@@ -7,6 +8,7 @@ import com.kd.springboot_store.dto.ResponseResult;
 import com.kd.springboot_store.service.LoginService;
 import com.kd.springboot_store.util.JwtUtil;
 import com.kd.springboot_store.util.RedisCache;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -85,7 +87,13 @@ public class LoginServiceImpl implements LoginService
         // 把完整的用戶訊息存入redis userId作為key
         redisCache.setCacheObject("login:" + userId, loginUser);
         System.out.println("這裡是LoginServiceImpl-----這裡有登入成功----userId為-----" + userId);
-        return new ResponseResult(200, "登录成功", hashMap);
+
+        UserResponseDTO userResponseDTO=new UserResponseDTO();
+        BeanUtils.copyProperties(loginUser.getUser(), userResponseDTO);
+        userResponseDTO.setAccessToken(jwt);
+
+
+        return new ResponseResult(200, "登录成功", userResponseDTO);
 
     }
 
