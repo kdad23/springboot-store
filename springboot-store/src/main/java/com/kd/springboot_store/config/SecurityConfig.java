@@ -104,15 +104,16 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth.requestMatchers("/api/login").permitAll()
                         .requestMatchers("/api/users/register").permitAll()
                         .requestMatchers("/api/users/login").permitAll()
+                        .requestMatchers("/api/users/logout").permitAll()
                         .requestMatchers("/swagger-ui/**").permitAll()
                         .requestMatchers("/v3/**").permitAll()
                         .anyRequest().authenticated())
-                //开启跨域访问
+                //開啟跨域訪問
                 .cors(AbstractHttpConfigurer::disable)
-                // 添加JWT认证过滤器
+                // 添加JWT認證過濾器
                 .addFilterBefore(jwtAuthenticationTokenFilter,
                         UsernamePasswordAuthenticationFilter.class);
-                // 配置异常处理
+                // 配置異常處理
 //                .exceptionHandling(exception -> exception.accessDeniedHandler(accessDeniedHandler).authenticationEntryPoint(authenticationEntryPoint));
 
 

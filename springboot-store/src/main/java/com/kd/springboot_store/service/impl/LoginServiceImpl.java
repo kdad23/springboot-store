@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 
 @Service
 public class LoginServiceImpl implements LoginService
@@ -86,6 +87,7 @@ public class LoginServiceImpl implements LoginService
         hashMap.put("token", jwt);
         // 把完整的用戶訊息存入redis userId作為key
         redisCache.setCacheObject("login:" + userId, loginUser);
+        redisCache.setCacheObject("Jwt", jwt, 100, TimeUnit.SECONDS);
         System.out.println("這裡是LoginServiceImpl-----這裡有登入成功----userId為-----" + userId);
 
         UserResponseDTO userResponseDTO=new UserResponseDTO();

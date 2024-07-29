@@ -38,8 +38,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
         //TODO: 查询权限信息封装到LoginUser中
         ArrayList<String> list = new ArrayList<>();
-//        list.add(user.getRoles());
-        list.add("USER");
+        list.add(user.getRoles());
+//        list.add("USER");
 
         System.out.println( "使用者的角色--------" + user.getRoles());
 

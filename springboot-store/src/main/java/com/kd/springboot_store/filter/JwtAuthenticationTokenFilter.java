@@ -7,6 +7,7 @@ import com.kd.springboot_store.util.RedisCache;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 
 @Component
 //OncePerRequestFilter特点是在处理单个HTTP请求时确保过滤器的 doFilterInternal 方法只被调用一次
@@ -40,13 +42,13 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
         }
 
         //2.解析token获取用户id
-        String subject;
+        String userId;
         try
         {
             Claims claims = JwtUtil.parseJWT(token);
             // 拿到userId
-            subject = claims.getSubject();
-
+            userId = claims.getSubject();
+            System.out.println("JWT裡面-----" + userId);
         }
         catch (Exception e)
         {
@@ -54,7 +56,7 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
             throw new RuntimeException("token非法");
         }
         //3.在redis中获取用户信息 注意：redis中的key是login：+userId
-        String redisKey = "login:" + subject;
+        String redisKey = "login:" + userId;
         LoginUser loginUser = (LoginUser) redisCache.getCacheObject(redisKey);
 
         //此处需要判断loginUser是否为空
@@ -62,6 +64,25 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
         {
             throw new RuntimeException("用户未登入");
         }
+
+        Long jwtExpireTime = redisCache.getExpire("Jwt");
+        System.out.println("這裡是在JwtAuthenticationTokenFilter裡面---jwtExpireTime---" + jwtExpireTime);
+        // 如果存在redis的Jwt快過期，就生成一個Jwt
+        if ( jwtExpireTime < 100 )
+        {
+            String jwt = JwtUtil.createJWT(userId);
+            redisCache.setCacheObject("Jwt", jwt, 100, TimeUnit.SECONDS);
+            // 為Cookie 設置 HttpOnly
+            Cookie myCookie = new Cookie("tokenFromJava", jwt);
+//        myCookie.setPath(request.getContextPath());
+            myCookie.setPath("/");
+            myCookie.setHttpOnly(true);
+            myCookie.setMaxAge(1000);
+            response.addCookie(myCookie);
+
+        }
+
+
         //4.将获取到的用户信息存入SecurityContextHolder 参数（用户信息，，权限信息），用三個參數的構造器，可以讓後面的過濾器知道已經認證了
         UsernamePasswordAuthenticationToken authenticationToken =
                 new UsernamePasswordAuthenticationToken(loginUser, null, loginUser.getAuthorities());

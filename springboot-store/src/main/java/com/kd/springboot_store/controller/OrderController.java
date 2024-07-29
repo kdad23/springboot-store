@@ -47,7 +47,7 @@ public class OrderController
         orderQueryParamsDTO.setLimit(limit);
         orderQueryParamsDTO.setOffset(offset);
         // 取得 order list
-        List<OrderResponseDTO> orderList=orderService.getOrders(orderQueryParamsDTO);
+        List<OrderResponseDTO> orderResponseDTOList=orderService.getOrders(orderQueryParamsDTO);
 
         // 取得 order 總數
         Integer count=orderService.countOrder(orderQueryParamsDTO);
@@ -57,7 +57,7 @@ public class OrderController
         page.setLimit(limit);
         page.setOffset(offset);
         page.setTotal(count);
-        page.setResults(orderList);
+        page.setResults(orderResponseDTOList);
 
         return ResponseEntity.status(HttpStatus.OK).body(page);
     }
@@ -97,6 +97,55 @@ public class OrderController
         }
         return ResponseEntity.status(HttpStatus.OK).body(orderResponseDTO);
     }
+
+
+
+
+
+    @Operation(summary = "刪除特定某一筆訂單")
+    @DeleteMapping("/api/users/delete/{orderId}")
+    public ResponseEntity<?> deleteOrder(
+            @PathVariable Integer orderId
+    )
+    {
+
+        orderService.deleteOrderById(orderId);
+
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+
+    }
+
+    @Operation(summary = "取得所有用戶的所有訂單")
+    @GetMapping("/api/users/orders")
+    public ResponseEntity<Page<OrderResponseDTO>> getAllOrders()
+    {
+        // 取得 order list
+        List<OrderResponseDTO> orderResponseDTOList=orderService.getAllOrders();
+        // 取得 order 總數
+        Integer count=orderResponseDTOList.size();
+        // 分頁
+        Page<OrderResponseDTO> page=new Page<>();
+        page.setTotal(count);
+        page.setResults(orderResponseDTOList);
+
+        return ResponseEntity.status(HttpStatus.OK).body(page);
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

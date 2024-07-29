@@ -179,9 +179,10 @@ public class UserController {
 //    }
 
 
-    @PostMapping("/logout")
+    @Operation(summary = "登出")
+    @GetMapping("/api/users/logout")
     public ResponseResult logout(){
-        System.out.println("开始登出");
+
         return loginServcie.logout();
     }
 
@@ -203,9 +204,6 @@ public class UserController {
     @PostMapping("/api/users/login")
     public ResponseResult  loginForSpringSecurity(@RequestBody User user)
     {
-
-        System.out.println("user.getEmail()---" + user.getEmail());
-        System.out.println("user.getPassword()---" + user.getPassword());
         return loginServcie.login(user);
 
     }

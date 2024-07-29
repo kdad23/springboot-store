@@ -13,7 +13,10 @@ public interface OrderService
     List<OrderResponseDTO> getOrders(OrderQueryParamsDTO orderQueryParamsDTO);
     OrderResponseDTO getOrderById(Integer orderId);
     Integer createOrder(Integer userId, CreateOrderRequestDTO createOrderRequestDTO);
+    void deleteOrderById(Integer orderId);
 
+
+    List<OrderResponseDTO> getAllOrders();
 
 
 

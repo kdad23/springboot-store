@@ -159,6 +159,35 @@ public class OrderServiceImpl implements OrderService
 
         return orderId;
     }
+    @Transactional
+    @Override
+    public void deleteOrderById(Integer orderId)
+    {
+        // 用orderId去找特定訂單
+        Order order=orderRepository.findById(orderId).orElse(null);
+
+        if (order != null)
+        {
+            // 更新商品的更新時間
+            order.setLastModifiedDate(new Date());
+            order.setDelFlag("1");
+            orderRepository.save(order);
+        }
+
+    }
+
+    @Transactional
+    @Override
+    public List<OrderResponseDTO> getAllOrders()
+    {
+        List<Order> orderList = orderRepository.findAll();
+
+        List<OrderResponseDTO> orderResponseDTOSList=BeanCopyUtils.copyListProperties(orderList
+                , OrderResponseDTO::new);
+
+        return orderResponseDTOSList;
+    }
+
 
 
 

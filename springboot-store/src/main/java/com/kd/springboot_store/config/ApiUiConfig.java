@@ -11,34 +11,34 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class ApiUiConfig
 {
-    @Bean
-    public GroupedOpenApi userApi()
-    {
-        return GroupedOpenApi.builder()
-                .group("用戶管理")
-                .pathsToMatch("/api/users/register")
-                .pathsToMatch("/api/users/login")
-                .build();
-    }
-    @Bean
-    public GroupedOpenApi productApi()
-    {
-        return GroupedOpenApi.builder()
-                .group("產品管理")
-                .pathsToMatch("/api/products/**")
-                .pathsToMatch("/api/**")
-                .build();
-    }
-
-
-    @Bean
-    public GroupedOpenApi orderApi()
-    {
-        return GroupedOpenApi.builder()
-                .group("訂單管理")
-                .pathsToMatch("/api/users/**")
-                .build();
-    }
+//    @Bean
+//    public GroupedOpenApi userApi()
+//    {
+//        return GroupedOpenApi.builder()
+//                .group("用戶管理")
+//                .pathsToMatch("/api/users/register")
+//                .pathsToMatch("/api/users/login")
+//                .build();
+//    }
+//    @Bean
+//    public GroupedOpenApi productApi()
+//    {
+//        return GroupedOpenApi.builder()
+//                .group("產品管理")
+//                .pathsToMatch("/api/products/**")
+//                .pathsToMatch("/api/**")
+//                .build();
+//    }
+//
+//
+//    @Bean
+//    public GroupedOpenApi orderApi()
+//    {
+//        return GroupedOpenApi.builder()
+//                .group("訂單管理")
+//                .pathsToMatch("/api/users/**")
+//                .build();
+//    }
 
 
     @Bean
