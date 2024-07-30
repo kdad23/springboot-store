@@ -26,7 +26,7 @@ import org.springframework.security.web.access.AccessDeniedHandlerImpl;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration //配置类
-@EnableMethodSecurity(prePostEnabled = true)
+//@EnableMethodSecurity(prePostEnabled = true)
 @EnableWebSecurity // 开启Spring Security的功能 代替了 implements WebSecurityConfigurerAdapter
 public class SecurityConfig {
 
@@ -96,9 +96,9 @@ public class SecurityConfig {
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                // 禁用CSRF保护
+                // 禁用CSRF保護
                 .csrf(csrf -> csrf.disable())
-                // 设置会话创建策略为无状态
+                // 設定會話创建策略为無狀態
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 // 配置授权规则             指定user/login路径.允许匿名访问(未登录可访问已登陆不能访问). 其他路径需要身份认证
                 .authorizeHttpRequests(auth -> auth.requestMatchers("/api/login").permitAll()
@@ -107,14 +107,15 @@ public class SecurityConfig {
                         .requestMatchers("/api/users/logout").permitAll()
                         .requestMatchers("/swagger-ui/**").permitAll()
                         .requestMatchers("/v3/**").permitAll()
+                        .requestMatchers("/api/users/orders").hasAuthority("ADMIN")
                         .anyRequest().authenticated())
                 //開啟跨域訪問
                 .cors(AbstractHttpConfigurer::disable)
                 // 添加JWT認證過濾器
                 .addFilterBefore(jwtAuthenticationTokenFilter,
-                        UsernamePasswordAuthenticationFilter.class);
+                        UsernamePasswordAuthenticationFilter.class)
                 // 配置異常處理
-//                .exceptionHandling(exception -> exception.accessDeniedHandler(accessDeniedHandler).authenticationEntryPoint(authenticationEntryPoint));
+                .exceptionHandling(exception -> exception.accessDeniedHandler(accessDeniedHandler).authenticationEntryPoint(authenticationEntryPoint));
 
 
         // 构建并返回安全过滤链

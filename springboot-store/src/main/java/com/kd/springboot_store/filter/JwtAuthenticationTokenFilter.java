@@ -67,7 +67,7 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
 
         Long jwtExpireTime = redisCache.getExpire("Jwt");
         System.out.println("這裡是在JwtAuthenticationTokenFilter裡面---jwtExpireTime---" + jwtExpireTime);
-        // 如果存在redis的Jwt快過期，就生成一個Jwt
+        // 如果存在redis的Jwt快過期，就生成一個新的Jwt
         if ( jwtExpireTime < 100 )
         {
             String jwt = JwtUtil.createJWT(userId);
@@ -86,6 +86,7 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
         //4.将获取到的用户信息存入SecurityContextHolder 参数（用户信息，，权限信息），用三個參數的構造器，可以讓後面的過濾器知道已經認證了
         UsernamePasswordAuthenticationToken authenticationToken =
                 new UsernamePasswordAuthenticationToken(loginUser, null, loginUser.getAuthorities());
+        System.out.println("這裡是JWT過濾器----loginUser.getAuthorities()---" + loginUser.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(authenticationToken);
 
         //5.放行

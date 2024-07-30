@@ -13,6 +13,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -180,7 +181,8 @@ public class OrderServiceImpl implements OrderService
     @Override
     public List<OrderResponseDTO> getAllOrders()
     {
-        List<Order> orderList = orderRepository.findAll();
+        Sort sort = Sort.by(Sort.Order.desc("createdDate"));
+        List<Order> orderList = orderRepository.findAll(sort);
 
         List<OrderResponseDTO> orderResponseDTOSList=BeanCopyUtils.copyListProperties(orderList
                 , OrderResponseDTO::new);
