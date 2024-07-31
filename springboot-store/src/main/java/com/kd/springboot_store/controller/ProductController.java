@@ -83,7 +83,7 @@ public class ProductController
             @RequestParam(defaultValue = "created_date") String orderBy,
             @RequestParam(defaultValue = "desc") String sort,
             // 分頁 Pagination
-            @RequestParam(defaultValue = "6") @Max(1000) @Min(0) Integer limit,
+            @RequestParam(defaultValue = "7") @Max(1000) @Min(0) Integer limit,
             @RequestParam(defaultValue = "0") @Min(0)Integer offset
     )
     {
@@ -111,6 +111,53 @@ public class ProductController
 
         return ResponseEntity.status(HttpStatus.OK).body(productList);
     }
+
+    @Operation(summary = "使用產品名稱取得所有商品")
+    @GetMapping("/api/products/byname/{search}")
+    public ResponseEntity<List<ProductResponseDTO>> getProductsByProductName(
+            // 查詢條件 Filtering
+            @RequestParam(required = false) ProductCategory category ,
+            @PathVariable String search,
+            // 排序 Sorting
+            @RequestParam(defaultValue = "created_date") String orderBy,
+            @RequestParam(defaultValue = "desc") String sort,
+            // 分頁 Pagination
+            @RequestParam(defaultValue = "7") @Max(1000) @Min(0) Integer limit,
+            @RequestParam(defaultValue = "0") @Min(0)Integer offset
+    )
+    {
+        ProductQueryParams productQueryParams=new ProductQueryParams();
+        productQueryParams.setCategory(category);
+        productQueryParams.setSearch(search);
+        productQueryParams.setOrderBy(orderBy);
+        productQueryParams.setSort(sort);
+        productQueryParams.setLimit(limit);
+        productQueryParams.setOffset(offset);
+
+        //取得 product list
+        List<ProductResponseDTO> productList =productService.getProducts(productQueryParams);
+
+        // 商品總筆數是會根據商品種類而不同
+//        Integer total=productService.countProduct(productQueryParams);
+        Integer total=productList.size();
+
+        // 分頁
+        Page<ProductResponseDTO> page=new Page<>();
+        page.setLimit(limit);
+        page.setOffset(offset);
+        page.setTotal(total);
+        page.setResults(productList);
+
+        return ResponseEntity.status(HttpStatus.OK).body(productList);
+    }
+
+
+
+
+
+
+
+
 
 
 
@@ -176,6 +223,8 @@ public class ProductController
     public ResponseEntity<?> deleteProduct( @PathVariable Integer productId)
     {
         productService.deleteProductById(productId);
+
+
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 
     }

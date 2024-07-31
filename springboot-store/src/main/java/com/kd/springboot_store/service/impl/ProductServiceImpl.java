@@ -10,6 +10,7 @@ import com.kd.springboot_store.dto.ProductQueryParams;
 
 import com.kd.springboot_store.dto.ProductRequestDTO;
 import com.kd.springboot_store.dto.ProductResponseDTO;
+import com.kd.springboot_store.model.Order;
 import com.kd.springboot_store.model.Product;
 import com.kd.springboot_store.model.QProduct;
 import com.kd.springboot_store.service.ProductService;
@@ -215,7 +216,23 @@ public class ProductServiceImpl implements ProductService
 
     @Transactional
     @Override
-    public void deleteProductById(Integer productId) {
-        productRepository.deleteById(productId);
+    public void deleteProductById(Integer productId)
+    {
+//        productRepository.deleteById(productId);
+
+        // 從資料庫裡取出的資料
+        Product product=
+                productRepository.findById(productId).orElse(null);
+
+        if (product != null)
+        {
+            // 更新商品的更新時間
+            product.setLastModifiedDate(new Date());
+            product.setDelFlag("1");
+            productRepository.save(product);
+        }
+
+
+
     }
 }

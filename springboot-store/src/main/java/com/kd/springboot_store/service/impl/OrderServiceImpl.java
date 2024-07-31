@@ -85,6 +85,7 @@ public class OrderServiceImpl implements OrderService
         {
             List<Map<String,String>> rawOrderItemList=null;
             List<OrderItemResponseDTO> orderItemList=null;
+            // rawOrderItemList 是自己Join多張表後取出的資料
             rawOrderItemList =
                     orderItemRepository.getOrderItemByOrderId(orderResponseDTO.getOrderId());
             orderItemList = JSON.parseArray(JSON.toJSONString(rawOrderItemList), OrderItemResponseDTO.class);
