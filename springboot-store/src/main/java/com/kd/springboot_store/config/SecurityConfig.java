@@ -25,7 +25,7 @@ import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.access.AccessDeniedHandlerImpl;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-@Configuration //配置类
+@Configuration //配置類
 //@EnableMethodSecurity(prePostEnabled = true)
 @EnableWebSecurity // 开启Spring Security的功能 代替了 implements WebSecurityConfigurerAdapter
 public class SecurityConfig {
@@ -64,6 +64,12 @@ public class SecurityConfig {
 
 
 
+//    @Bean
+//    public AuthenticationManager authenticationManager() {
+//        return new ProviderManager(daoAuthenticationProvider());
+//        // 若有多個驗證方式，可使用：
+//        // List.of(daoAuthenticationProvider(), customAuthenticationProvider())
+//    }
 
 //    @Bean
 //    public AuthenticationManager authenticationManager(PasswordEncoder passwordEncoder){
@@ -79,6 +85,16 @@ public class SecurityConfig {
 
 
 
+//    @Bean
+//    public DaoAuthenticationProvider daoAuthenticationProvider() {
+//        DaoAuthenticationProvider authenticationProvider
+//                = new DaoAuthenticationProvider();
+//        authenticationProvider.setUserDetailsService(userDetailsService);
+//        authenticationProvider.setPasswordEncoder(new BCryptPasswordEncoder());
+//        return authenticationProvider;
+//    }
+
+
 
 
 
@@ -87,21 +103,22 @@ public class SecurityConfig {
 
 
     /**
-     * 配置Spring Security的过滤链。
+     * 配置Spring Security的過濾鍊。
      *
-     * @param http 用于构建安全配置的HttpSecurity对象。
-     * @return 返回配置好的SecurityFilterChain对象。
-     * @throws Exception 如果配置过程中发生错误，则抛出异常。
+     * @param http 用於構建安全配置的HttpSecurity物件。
+     * @return 返回配置好的SecurityFilterChain物件。
+     * @throws Exception 如果配置過程中發生錯誤，則抛出異常。
      */
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 // 禁用CSRF保護
                 .csrf(csrf -> csrf.disable())
-                // 設定會話创建策略为無狀態
+                // 設定會話創建策略為無狀態
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                // 配置授权规则             指定user/login路径.允许匿名访问(未登录可访问已登陆不能访问). 其他路径需要身份认证
-                .authorizeHttpRequests(auth -> auth.requestMatchers("/api/login").permitAll()
+                // 設定授權規則
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/api/login").permitAll()
                         .requestMatchers("/api/users/register").permitAll()
                         .requestMatchers("/api/users/login").permitAll()
                         .requestMatchers("/api/users/logout").permitAll()
@@ -118,7 +135,7 @@ public class SecurityConfig {
                 .exceptionHandling(exception -> exception.accessDeniedHandler(accessDeniedHandler).authenticationEntryPoint(authenticationEntryPoint));
 
 
-        // 构建并返回安全过滤链
+        // 構建並返回安全過濾鍊
         return http.build();
     }
 

@@ -187,14 +187,14 @@ public class UserController {
     }
 
 
-    @PreAuthorize("hasAuthority('USER')")
-    @GetMapping("/hello")
-    public String  hello()
-    {
-
-        return "Hello---------------";
-
-    }
+//    @PreAuthorize("hasAuthority('USER')")
+//    @GetMapping("/hello")
+//    public String  hello()
+//    {
+//
+//        return "Hello---------------";
+//
+//    }
 
 
 

@@ -17,16 +17,16 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 public class LoginUser implements UserDetails {
 
-    private User user;//封装用户信息
+    private User user;//封裝用戶訊息
 
-    private List<String> permissions;//存储权限信息
+    private List<String> permissions;//儲存權限訊息
 
     public LoginUser(User user, List<String> list) {
         this.user = user;
         this.permissions = list;
     }
-    //我们把这个List写到外面这里了，注意成员变量名一定要是authorities，不然会出现奇奇怪怪的问题
-    @JSONField(serialize = false) //这个注解的作用是不让下面那行的成员变量序列化存入redis，避免redis不支持而报异常
+    //我们把這個List寫到外面這裡了，注意成員變數名一定要是authorities，不然會出縣奇怪的问题
+    @JSONField(serialize = false) //這個注解的作用是不讓下面那行的成員變數序列化存入redis，避免redis不支持而报异常
     private List<SimpleGrantedAuthority> authorities;
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -34,44 +34,44 @@ public class LoginUser implements UserDetails {
         {
             return authorities;
         }
-        //把permissions中字符串类型的权限信息转换成GrantedAuthority对象存入authorities
+        //把permissions中字符串類型的權限信息转换成GrantedAuthority物件存入authorities
         authorities = permissions.stream()
                 .map(SimpleGrantedAuthority::new)
                 .collect(Collectors.toList());
         return authorities;
     }
 
-    //获取密码
+    //獲取密码
     @Override
     public String getPassword() {
         return user.getPassword();
     }
 
-    //获取用户名
+    //獲取用户名
     @Override
     public String getUsername() {
         return user.getEmail();
     }
 
-    //账户是否未过期
+    //帳號是否未過期
     @Override
     public boolean isAccountNonExpired() {
         return true;
     }
 
-    //账户是否未锁定
+    //帳號是否未鎖定
     @Override
     public boolean isAccountNonLocked() {
         return true;
     }
 
-    //密码是否未过期
+    //密馬是否未過期
     @Override
     public boolean isCredentialsNonExpired() {
         return true;
     }
 
-    //账户是否可用
+    //帳號是否可用
     @Override
     public boolean isEnabled() {
         return true;

@@ -83,7 +83,7 @@ public class ProductController
             @RequestParam(defaultValue = "created_date") String orderBy,
             @RequestParam(defaultValue = "desc") String sort,
             // 分頁 Pagination
-            @RequestParam(defaultValue = "7") @Max(1000) @Min(0) Integer limit,
+            @RequestParam(defaultValue = "60") @Max(1000) @Min(0) Integer limit,
             @RequestParam(defaultValue = "0") @Min(0)Integer offset
     )
     {
@@ -122,7 +122,7 @@ public class ProductController
             @RequestParam(defaultValue = "created_date") String orderBy,
             @RequestParam(defaultValue = "desc") String sort,
             // 分頁 Pagination
-            @RequestParam(defaultValue = "7") @Max(1000) @Min(0) Integer limit,
+            @RequestParam(defaultValue = "70") @Max(1000) @Min(0) Integer limit,
             @RequestParam(defaultValue = "0") @Min(0)Integer offset
     )
     {
@@ -185,7 +185,7 @@ public class ProductController
     }
     @Operation(summary = "創建商品")
     @PostMapping("/api/products")
-    public ResponseEntity<ProductResponseDTO> createProduct( @RequestBody @Valid ProductRequestDTO productRequestDTO)
+    public ResponseEntity<ProductResponseDTO> createProduct( @RequestBody  ProductRequestDTO productRequestDTO)
     {
 
         Integer productId=productService.createProduct(productRequestDTO);

@@ -34,7 +34,7 @@ public class OrderController
     private ProductService productService;
 
 //    @PreAuthorize("hasAuthority('')")
-    @Operation(summary = "取得用戶所有訂單")
+    @Operation(summary = "取得特定用戶所有訂單")
     @GetMapping("/api/users/{userId}/orders")
     public ResponseEntity<Page<OrderResponseDTO>> getOrders(
             @PathVariable Integer userId,
@@ -64,8 +64,8 @@ public class OrderController
 
 
     @Operation(summary = "創建訂單")
-    @PostMapping("/api/users/{userId}/orders")
-    public ResponseEntity<?> createOrder(@PathVariable Integer userId,
+    @PostMapping("/api/users/{userId}/post/orders")
+    public ResponseEntity<OrderResponseDTO> createOrder(@PathVariable Integer userId,
                                          @RequestBody @Valid CreateOrderRequestDTO createOrderRequestDTO)
     {
         Integer orderId =orderService.createOrder(userId, createOrderRequestDTO);
@@ -74,9 +74,6 @@ public class OrderController
 
         return ResponseEntity.status(HttpStatus.CREATED).body(orderResponseDTO);
     }
-
-
-
 
 
     @Operation(summary = "取得特定某一筆訂單")
@@ -97,10 +94,6 @@ public class OrderController
         }
         return ResponseEntity.status(HttpStatus.OK).body(orderResponseDTO);
     }
-
-
-
-
 
     @Operation(summary = "刪除特定某一筆訂單")
     @DeleteMapping("/api/users/delete/{orderId}")
